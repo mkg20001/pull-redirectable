@@ -8,8 +8,6 @@ const redir = require('../src')
 
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
-const expect = chai.expect
-const equal = require('assert').deepEqual
 const pull = require('pull-stream')
 chai.use(dirtyChai)
 

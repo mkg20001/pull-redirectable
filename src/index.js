@@ -1,6 +1,8 @@
 'use strict'
 
-//TODO: rewrite this as soon as I figure out how to do that better
+/* eslint-disable standard/no-callback-literal */
+
+// TODO: rewrite this as soon as I figure out how to do that better
 
 const debug = require('debug')
 const log = debug('pull-redirectable')
@@ -101,7 +103,7 @@ class RedirSource extends RedirStream {
   sink (read) { // we get the readable function
     log('source: initialized readable')
     const next = (end, data) => {
-      log('source(read): end=%s data=%s', end, !!data)
+      log('source(read): end=%s data=%s', end, Boolean(data))
       if (end) {
         return this.end(end, data)
       }
@@ -109,7 +111,7 @@ class RedirSource extends RedirStream {
     }
     this.unqueueEvents('wantdata', (id, end, cb) => {
       if (this._ended) return this.emit(id, 'getdata', ...this._ended)
-      const _do = (this.dest == id || !end)
+      const _do = (this.dest === id || !end)
       log('source: get wantdata source[%s], ignore %s', id, !_do)
       if (end) {
         if ((end === true && id === 'b') || end !== true) {
@@ -138,7 +140,7 @@ class RedirSinkSub extends RedirStreamSub {
   sink (read) {
     log('sink[%s]: initialized readable', this.id)
     const next = (end, data) => {
-      log('sink[%s](read): end=%s data=%s', this.id, end, !!data)
+      log('sink[%s](read): end=%s data=%s', this.id, end, Boolean(data))
       if (end) {
         return this.end(end, data)
       }
@@ -148,7 +150,7 @@ class RedirSinkSub extends RedirStreamSub {
     const main = this.main
     this.unqueueEvents('wantdata', (end, cb) => {
       if (main._ended) return this.emit('getdata', ...main._ended)
-      const _do = (main.dest == id || !end)
+      const _do = (main.dest === id || !end)
       log('sink[%s]: get wantdata sink, ignore %s', id, !_do)
       if (end) {
         if ((end === true && id === 'b') || end !== true) {
