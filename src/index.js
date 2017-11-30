@@ -1,7 +1,6 @@
 'use strict'
 
-/* const pull = require('pull-stream')
-const Pushable = require('pull-pushable') */
+//TODO: rewrite this as soon as I figure out how to do that better
 
 const debug = require('debug')
 const log = debug('pull-redirectable')
