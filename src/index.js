@@ -58,6 +58,7 @@ class RedirStreamSub extends EE {
     this.emit = (ev, ...args) => {
       main.emit(id, ev, ...args)
       main.emit(ev, id, ...args)
+      this._emit(ev, ...args)
     }
   }
 }
@@ -128,6 +129,77 @@ class RedirSource extends RedirStream {
   }
 }
 
+class RedirSinkSub extends RedirStreamSub {
+  constructor (main, id) {
+    super(main, id)
+    this.harden('sink')
+    this.queueEvents('wantdata')
+    log('sink[%s]: create', id)
+  }
+  sink (read) {
+    log('sink[%s]: initialized readable', this.id)
+    const next = (end, data) => {
+      log('sink[%s](read): end=%s data=%s', this.id, end, !!data)
+      if (end) {
+        return this.end(end, data)
+      }
+      this.emit('gotdata', data)
+    }
+    const id = this.id
+    const main = this.main
+    this.unqueueEvents('wantdata', (end, cb) => {
+      if (main._ended) return this.emit('getdata', ...main._ended)
+      const _do = (main.dest == id || !end)
+      log('sink[%s]: get wantdata sink, ignore %s', id, !_do)
+      if (end) {
+        if ((end === true && id === 'b') || end !== true) {
+          log('sink[%s]: ending stream', id)
+          this.end(end, null)
+          return read(end)
+        } else if (end === true) {
+          log('sink[%s]: ending dest sink', id)
+          this.emit(id, 'getdata', end)
+        }
+      } else {
+        log('sink: read')
+        read(null, next)
+      }
+    })
+  }
+  end (end, data) {
+    log('sink[%s]: ending %s', this.id, end)
+    this.emit('getdata', end, data)
+    this.main._ended = [end, data]
+  }
+}
+
+class RedirSink extends RedirStream {
+  constructor () {
+    super()
+    this.a = new RedirSinkSub(this, 'a')
+    this.b = new RedirSinkSub(this, 'b')
+    this.harden('source')
+    this.on('gotdata', (id, data) => {
+      log('sink: gotdata')
+      this.emit('getdata', id, null, data)
+    })
+    this.queueEvents('wantdata')
+    log('sink: create')
+  }
+  source (end, cb) {
+    log('sink: wantdata, end %s', this.id, end)
+    this.once('getdata', (...args) => {
+      args.shift()
+      this._waiting = false
+      log('sink: getdata satisfied')
+      cb(...args)
+    })
+    this.emit(this.dest, 'wantdata', end, cb)
+    this._waiting = true
+  }
+}
+
 module.exports = {
-  source: () => new RedirSource()
+  source: () => new RedirSource(),
+  sink: () => new RedirSink()
 }

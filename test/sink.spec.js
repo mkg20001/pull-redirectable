@@ -17,57 +17,57 @@ const v = [1, 2, 3, 4]
 
 describe('redirectable stream', () => {
   describe('source', () => {
-    it('moves data from i to a', cb => {
-      const s = redir.source()
+    it('moves data from a to o', cb => {
+      const s = redir.sink()
 
       pull(
         pull.values(v),
-        s.sink
+        s.a.sink
       )
       pull(
-        s.a.source,
+        s.source,
         pullCompare(v, cb)
       )
     })
 
-    it('moves data from i to b', cb => {
-      const s = redir.source()
+    it('moves data from b to o', cb => {
+      const s = redir.sink()
 
       s.switchRails('b')
 
       pull(
         pull.values(v),
-        s.sink
+        s.b.sink
       )
 
       pull(
-        s.b.source,
+        s.source,
         pullCompare(v, cb)
       )
     })
 
-    it('moves half the data from i to a and the other half to b', cb => {
-      const s = redir.source()
+    it('moves half the data from a to o and the other half from b', cb => {
+      const s = redir.sink()
       let i = 0
 
       pull(
-        pull.values(v),
-        s.sink
-      )
-
-      pull(
-        s.a.source,
+        pull.values(v.slice(0, 2)),
         pull.map(v => {
           i++
           if (i === 2) s.switchRails('b')
           return v
         }),
-        pullCompare(v.slice(0, 2))
+        s.a.sink
       )
 
       pull(
-        s.b.source,
-        pullCompare(v.slice(3), cb)
+        pull.values(v.slice(2)),
+        s.b.sink
+      )
+
+      pull(
+        s.source,
+        pullCompare(v, cb)
       )
     })
   })
