@@ -1,0 +1,37 @@
+{
+  "name": "pull-redirectable",
+  "version": "0.0.1",
+  "description": "A redirectable pull stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "aegir test",
+    "lint": "aegir lint",
+    "build": "aegir build",
+    "test:node": "aegir test -t node",
+    "test:browser": "aegir test -t browser",
+    "release": "aegir release",
+    "release-minor": "aegir release --type minor",
+    "release-major": "aegir release --type major",
+    "coverage": "aegir coverage",
+    "coverage-publish": "aegir coverage -u"
+  },
+  "keywords": [
+    "pull-stream",
+    "redirectable",
+    "duplex",
+    "source",
+    "sink"
+  ],
+  "author": "Maciej Krüger <mkg20001@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "aegir": "^12.2.0",
+    "chai": "^4.1.2",
+    "dirty-chai": "^2.0.1",
+    "pull-pair": "^1.1.0",
+    "pull-pushable": "^2.1.1"
+  },
+  "dependencies": {
+    "pull-stream": "^3.6.1"
+  }
+}
