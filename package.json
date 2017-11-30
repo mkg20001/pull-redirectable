@@ -44,5 +44,8 @@
   "bugs": {
     "url": "https://github.com/mkg20001/pull-redirectable/issues"
   },
-  "homepage": "https://github.com/mkg20001/pull-redirectable#readme"
+  "homepage": "https://github.com/mkg20001/pull-redirectable#readme",
+  "contributors": [
+    "mkg20001 <mkg20001@gmail.com>"
+  ]
 }
