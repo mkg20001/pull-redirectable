@@ -28,11 +28,11 @@
     "aegir": "^12.2.0",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
-    "pull-pair": "^1.1.0",
-    "pull-pushable": "^2.1.1"
+    "pull-pair": "^1.1.0"
   },
   "dependencies": {
-    "pull-stream": "^3.6.1"
+    "pull-stream": "^3.6.1",
+    "pull-pushable": "^2.1.1"
   },
   "directories": {
     "test": "test"
