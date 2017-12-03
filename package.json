@@ -1,6 +1,6 @@
 {
   "name": "pull-redirectable",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Redirectable pull-streams",
   "main": "src/index.js",
   "scripts": {
