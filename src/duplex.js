@@ -8,11 +8,11 @@ const debug = require('debug')
 const log = debug('pull-redirectable:duplex')
 
 class RedirDuplexSub extends CommonSub {
-  constructor(main, id) {
+  constructor (main, id) {
     super(main, id)
     log('[%s]: init', id)
   }
-  _() {
+  _ () {
     this.source = this.main.src[this.id].source
     this.sink = this.main.sk[this.id].sink
     delete this._
