@@ -9,7 +9,7 @@ class CommonStream extends EE {
     this.b = new CL(this, 'b')
     this.dest = 'a'
   }
-  changeDest(d) {
+  changeDest (d) {
     this.dest = d
     this.emit('switch', d)
   }
