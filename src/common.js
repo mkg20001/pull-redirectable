@@ -1,6 +1,5 @@
 'use strict'
 
-const Pushable = require('pull-pushable')
 const EE = require('events').EventEmitter
 
 class CommonStream extends EE {
@@ -9,8 +8,6 @@ class CommonStream extends EE {
     this.a = new CL(this, 'a')
     this.b = new CL(this, 'b')
     this.dest = 'a'
-    this.in = Pushable()
-    this.out = Pushable()
   }
   changeDest(d) {
     this.dest = d

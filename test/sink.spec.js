@@ -14,7 +14,7 @@ chai.use(dirtyChai)
 const v = [1, 2, 3, 4]
 
 describe('redirectable stream', () => {
-  describe('source', () => {
+  describe('sink', () => {
     it('moves data from a to o', cb => {
       const s = redir.sink()
 
@@ -31,7 +31,7 @@ describe('redirectable stream', () => {
     it('moves data from b to o', cb => {
       const s = redir.sink()
 
-      s.switchRails('b')
+      s.changeDest('b')
 
       pull(
         pull.values(v),
@@ -52,7 +52,7 @@ describe('redirectable stream', () => {
         pull.values(v.slice(0, 2)),
         pull.map(v => {
           i++
-          if (i === 2) s.switchRails('b')
+          if (i === 2) s.changeDest('b')
           return v
         }),
         s.a.sink

@@ -2,6 +2,7 @@
 
 const pull = require('pull-stream')
 const {CommonStream, CommonSub} = require('./common')
+const Pushable = require('pull-pushable')
 
 const debug = require('debug')
 const log = debug('pull-redirectable:source')
@@ -16,7 +17,7 @@ class RedirSourceSub extends CommonSub {
   source (end, cb) {
     log('[%s]: got read (end=%s)', this.id, end)
     this.waiting = (err, res) => {
-      log('[%s]: got res (end=%s, data=%s)', this.id, err, res)
+      log('[%s]: got res (end=%s, data=%s)', this.id, err, Boolean(res))
       if (err) this.ended = err
       delete this.waiting
       cb(err, res)
@@ -30,6 +31,7 @@ class RedirSource extends CommonStream {
     super(RedirSourceSub)
     log('[+]: init')
     this.sink = this.sink.bind(this)
+    this.in = Pushable()
   }
   sink (read) {
     log('[+]: got readable')
