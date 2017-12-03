@@ -31,7 +31,7 @@ describe('redirectable stream', () => {
     it('moves data from i to b', cb => {
       const s = redir.source()
 
-      s.switchRails('b')
+      s.changeDest('b')
 
       pull(
         pull.values(v),
@@ -57,7 +57,7 @@ describe('redirectable stream', () => {
         s.a.source,
         pull.map(v => {
           i++
-          if (i === 2) s.switchRails('b')
+          if (i === 2) s.changeDest('b')
           return v
         }),
         pullCompare(v.slice(0, 2))
@@ -65,7 +65,7 @@ describe('redirectable stream', () => {
 
       pull(
         s.b.source,
-        pullCompare(v.slice(3), cb)
+        pullCompare(v.slice(2), cb)
       )
     })
   })
